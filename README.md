@@ -63,10 +63,9 @@ reciente, no el árbol de trabajo. Para probar un cambio local:
 uvx copier copy --trust --vcs-ref=HEAD ruta/a/la/plantilla /tmp/prueba
 ```
 
-**Antes de cambiar el valor por defecto de `organizacion_github`** en
-`copier.yml`, verifica que es el nombre exacto de la organización en GitHub.
-Con él puesto, todo proyecto nuevo se publica ahí y ninguno queda huérfano en
-una cuenta personal.
+**Proyectos de DUNNE.** En la pregunta de GitHub, responde con el nombre de la
+organización, no con tu usuario. Un proyecto de la división creado en una cuenta
+personal queda huérfano cuando su autor deja la división.
 
 ### Decisiones de diseño que no conviene deshacer
 
@@ -86,6 +85,12 @@ inicial ni publica: un repositorio sin `uv.lock` rompería el CI en el primer pu
 **`.gitignore` y `.gitattributes` llevan sufijo `.jinja`** aunque no tengan
 variables. Sin él, el propio repositorio de la plantilla los interpretaría como
 suyos.
+
+**El repositorio de la plantilla fuerza LF con su propio `.gitattributes`.** En
+Windows, Git con `core.autocrlf=true` convierte a CRLF al clonar, y Copier copia
+tal cual los archivos sin sufijo `.jinja`; los que sí lo llevan salen en LF
+porque Jinja normaliza los saltos de línea. Sin ese archivo, cada proyecto
+generado en Windows traería una mezcla de ambos.
 
 **Nombres de archivo condicionales sin comillas dobles.** Son ilegales en rutas
 de Windows; si una condición necesita comparar texto, usa comillas simples.

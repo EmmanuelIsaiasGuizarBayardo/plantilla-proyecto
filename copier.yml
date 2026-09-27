@@ -71,7 +71,7 @@ indice_cuda:
 
 organizacion_github:
   type: str
-  help: "Organización de GitHub donde crear el repositorio (vacío = no crear)"
+  help: "Cuenta u organización de GitHub donde crear el repositorio (vacío = no crear)"
   default: "EmmanuelIsaiasGuizarBayardo"
 
 # ── Valores derivados: no se preguntan ───────────────────────────────────────

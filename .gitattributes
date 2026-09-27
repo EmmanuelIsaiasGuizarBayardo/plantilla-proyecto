@@ -1,0 +1,4 @@
+# Finales de linea del propio repositorio de la plantilla. Sin esto, un clon en
+# Windows con core.autocrlf=true trae CRLF, y Copier copia tal cual a cada
+# proyecto los archivos que no pasan por Jinja.
+* text=auto eol=lf
