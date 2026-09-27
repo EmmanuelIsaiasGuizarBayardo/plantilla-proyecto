@@ -1,0 +1,86 @@
+# ══════════════════════════════════════════════════════════════════════════════
+#  Plantilla de proyectos DUNNE
+#  Uso:  uvx copier copy --trust gh:EmmanuelIsaiasGuizarBayardo/plantilla-proyecto Nombre_Del_Proyecto
+# ══════════════════════════════════════════════════════════════════════════════
+
+_min_copier_version: "9.0.0"
+_subdirectory: plantilla
+_answers_file: .copier-answers.yml
+
+# Archivos que nacen de la plantilla y después pertenecen al estudiante: una
+# actualización nunca los toca.
+_skip_if_exists:
+  - "src/*/main.py"
+  - "src/*/__init__.py"
+  - "src/*/utils.py"
+
+# Una sola tarea, a proposito: Copier aborta las tareas restantes si una falla.
+# El script ejecuta cada paso por separado y siempre termina bien.
+_tasks:
+  - command:
+      - "{{ _copier_python }}"
+      - "{{ _copier_conf.src_path / 'extensiones' / 'post_generacion.py' }}"
+      - "--nombre-proyecto={{ nombre_proyecto }}"
+      - "--nombre-modulo={{ nombre_modulo }}"
+      - "--nombre-dist={{ nombre_dist }}"
+      - "--organizacion={{ organizacion_github }}"
+      - "--investigacion={{ investigacion }}"
+      - "--usa-gpu={{ usa_gpu }}"
+
+# ── Preguntas ────────────────────────────────────────────────────────────────
+# Todas tienen valor por defecto: con --defaults se obtiene un proyecto mínimo
+# que funciona, sin responder nada.
+
+nombre_proyecto:
+  type: str
+  help: Nombre del proyecto
+  default: "{{ _copier_conf.dst_path.name }}"
+  validator: >-
+    {% if not (nombre_proyecto.replace(' ', '_').replace('-', '_').isidentifier()
+               and nombre_proyecto.isascii()) %}
+    Usa solo letras sin acentos, números, espacios, guiones o guiones bajos,
+    y empieza con una letra.
+    {% endif %}
+
+descripcion:
+  type: str
+  help: Una línea que describa el proyecto
+  default: "Pendiente: objetivo del repositorio."
+
+python_version:
+  type: str
+  help: Versión de Python
+  choices: ["3.12", "3.13"]
+  default: "3.12"
+
+investigacion:
+  type: bool
+  help: "¿Es investigación con datos, libretas y experimentos? (agrega data/, notebooks/ y reproducibilidad)"
+  default: false
+
+usa_gpu:
+  type: bool
+  help: "¿Usa PyTorch con GPU NVIDIA?"
+  default: false
+
+indice_cuda:
+  type: str
+  help: "Índice de ruedas de PyTorch según tu driver (consulta pytorch.org)"
+  default: cu130
+  when: "{{ usa_gpu }}"
+
+organizacion_github:
+  type: str
+  help: "Organización de GitHub donde crear el repositorio (vacío = no crear)"
+  default: "EmmanuelIsaiasGuizarBayardo"
+
+# ── Valores derivados: no se preguntan ───────────────────────────────────────
+nombre_modulo:
+  type: str
+  default: "{{ nombre_proyecto | lower | replace(' ', '_') | replace('-', '_') }}"
+  when: false
+
+nombre_dist:
+  type: str
+  default: "{{ nombre_proyecto | lower | replace(' ', '-') | replace('_', '-') }}"
+  when: false

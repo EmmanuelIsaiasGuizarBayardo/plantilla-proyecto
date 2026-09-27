@@ -1,0 +1,70 @@
+[project]
+name = "{{ nombre_dist }}"
+version = "0.1.0"
+description = {{ descripcion | tojson }}
+readme = "README.md"
+requires-python = ">={{ python_version }}"
+
+# Sin pines de version: uv.lock fija la resolucion exacta.
+{%- if investigacion %}
+dependencies = [
+    "mne",
+    "numpy",
+    "scipy",
+    "scikit-learn",
+    "matplotlib",
+    "pandas",
+    "pyyaml",
+    "ipykernel",
+]
+{%- else %}
+dependencies = []
+{%- endif %}
+{%- if usa_gpu %}
+
+[project.optional-dependencies]
+# Extra pesado, fuera de las dependencias base: el CI sincroniza sin el.
+gpu = [
+    "torch",
+    "torchvision",
+]
+{%- endif %}
+
+[project.scripts]
+{{ nombre_dist }} = "{{ nombre_modulo }}.main:main"
+
+[dependency-groups]
+dev = [
+    "pytest",
+    "ruff",
+    "pre-commit",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/{{ nombre_modulo }}"]
+{%- if usa_gpu %}
+
+# El indice de PyTorch es explicito: solo torch y torchvision lo consultan.
+[tool.uv.sources]
+torch = [{ index = "pytorch" }]
+torchvision = [{ index = "pytorch" }]
+
+[[tool.uv.index]]
+name = "pytorch"
+url = "https://download.pytorch.org/whl/{{ indice_cuda }}"
+explicit = true
+{%- endif %}
+
+[tool.ruff]
+line-length = 100
+target-version = "py{{ python_version | replace('.', '') }}"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"{% if investigacion %}, "NPY"{% endif %}]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
