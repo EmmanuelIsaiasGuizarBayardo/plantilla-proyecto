@@ -1,0 +1,239 @@
+<!-- Generado por la plantilla DUNNE; se actualiza con 'uvx copier update --trust'. -->
+
+# Comandos de {{ nombre_proyecto }}
+
+Solo aparecen las secciones que aplican a este proyecto. Donde un comando cambia
+entre sistemas operativos, se muestran ambas variantes.
+
+---
+
+<details>
+<summary><b>Trabajo diario</b></summary>
+
+Sincronizar el entorno, por ejemplo después de un `git pull` que cambió el lock.
+
+```
+uv sync{% if usa_gpu %} --extra gpu{% endif %}
+```
+
+Ejecutar el punto de entrada o cualquier script, sin activar nada.
+
+```
+uv run python -m {{ nombre_modulo }}.main
+uv run python ruta/al/script.py
+```
+
+Activar el entorno para una terminal interactiva.
+
+```
+# Windows (PowerShell)
+.\.venv\Scripts\Activate.ps1
+# Mac y Linux
+source .venv/bin/activate
+```
+
+</details>
+
+<details>
+<summary><b>Dependencias</b></summary>
+
+Agregar o quitar. Nunca con `pip install` suelto: no quedaría en `uv.lock`.
+
+```
+uv add mne-bids
+uv add --dev ipdb
+uv remove pandas
+```
+{%- if usa_gpu %}
+
+Agregar al extra de GPU.
+
+```
+uv add --optional gpu torchaudio
+```
+{%- endif %}
+
+Subir todo a la versión más reciente compatible, y ver el árbol resuelto.
+
+```
+uv lock --upgrade
+uv tree
+```
+
+Regenerar `requirements.txt` a mano. Siempre con este script, nunca con `uv export`.
+
+```
+uv run python tools/export_requirements.py
+```
+
+</details>
+{%- if usa_gpu %}
+
+<details>
+<summary><b>GPU y CUDA</b></summary>
+
+Verificación con diagnóstico de la causa, si falla.
+
+```
+uv run python -c "from {{ nombre_modulo }}.device import get_device; get_device()"
+```
+
+Distinguir "no hay GPU accesible" de "la rueda de torch es solo CPU".
+
+```
+uv run python -c "import torch; print(torch.__version__, torch.version.cuda, torch.cuda.is_available())"
+```
+
+Driver y VRAM libre.
+
+```
+nvidia-smi
+```
+
+</details>
+{%- endif %}
+{%- if investigacion %}
+
+<details>
+<summary><b>Libretas</b></summary>
+
+Abrir Jupyter dentro del entorno del proyecto.
+
+```
+uv run jupyter lab
+```
+
+Volver a registrar el kernel si desaparece de la lista.
+
+```
+uv run python -m ipykernel install --user --name {{ nombre_modulo }}
+```
+
+Dentro de la libreta: importar el paquete y recargar los cambios de `src/` sin reiniciar el kernel.
+
+```python
+%load_ext autoreload
+%autoreload 2
+from {{ nombre_modulo }}.reproducibility import set_seed
+```
+
+</details>
+{%- endif %}
+
+<details>
+<summary><b>Calidad y pruebas</b></summary>
+
+```
+uv run pytest -q
+uv run ruff check . --fix
+uv run ruff format .
+uv run pre-commit run --all-files
+```
+
+</details>
+
+<details>
+<summary><b>Git y GitHub</b></summary>
+
+Antes de cada push: confirmar que ningún archivo de datos se coló.
+
+```
+git status --porcelain
+git ls-files data/
+```
+
+Commit normal. Si el hook regenera `uv.lock` o `requirements.txt`, vuelve a agregar y a commitear.
+
+```
+git add .
+git commit -m "Mensaje"
+```
+
+Saltarse los hooks cuando no hay red.
+
+```
+git commit --no-verify -m "Mensaje"
+```
+
+Ver cambios sin paginador.
+
+```
+git --no-pager diff --stat
+```
+
+Etiquetar una versión antes de una presentación pública.
+
+```
+git tag -a v1.0.0 -m "Evento donde se presentó"
+git push --tags
+```
+
+</details>
+
+<details>
+<summary><b>Estándar DUNNE</b></summary>
+
+Traer las mejoras del estándar, con el árbol limpio. Sin `--defaults`, pregunta por los rasgos nuevos que haya agregado la plantilla.
+
+```
+uvx copier update --trust
+```
+
+Ver qué versión de la plantilla tiene este proyecto.
+
+```
+git --no-pager grep -h _commit .copier-answers.yml
+```
+
+</details>
+
+<details>
+<summary><b>Replicar en otra máquina</b></summary>
+
+Con uv, resolución exacta desde el lock.
+
+```
+git clone URL
+cd {{ nombre_dist }}
+uv sync{% if usa_gpu %} --extra gpu{% endif %}
+uv run pre-commit install
+```
+
+Solo con pip.
+
+```
+python -m venv .venv
+# Windows:    .venv\Scripts\activate
+# Mac/Linux:  source .venv/bin/activate
+pip install -r requirements.txt
+pip install -e . --no-deps
+```
+
+</details>
+
+<details>
+<summary><b>Reparaciones y desmontaje</b></summary>
+
+Reconstruir el entorno desde cero.
+
+```
+# Windows (PowerShell)
+Remove-Item -Recurse -Force .venv
+# Mac y Linux
+rm -rf .venv
+# Después, en ambos
+uv sync{% if usa_gpu %} --extra gpu{% endif %}
+```
+
+Desmontar el proyecto por completo{% if investigacion %}, incluido su kernel de Jupyter{% endif %}.
+
+```
+{%- if investigacion %}
+uv run jupyter kernelspec uninstall {{ nombre_modulo }}
+{%- endif %}
+gh repo delete CUENTA/{{ nombre_dist }} --yes
+```
+
+Y después borra la carpeta del proyecto.
+
+</details>

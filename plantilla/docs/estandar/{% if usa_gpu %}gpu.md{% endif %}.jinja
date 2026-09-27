@@ -1,0 +1,30 @@
+<!-- Archivo del estandar DUNNE, generado por la plantilla. No se edita aqui:
+     se actualiza con 'uvx copier update --trust'. -->
+
+# Módulo: GPU
+
+Aplica porque el proyecto usa PyTorch con GPU NVIDIA.
+
+## Instalación
+
+- torch y torchvision viven en el extra `gpu`: `uv sync --extra gpu`. El CI sincroniza sin él para no descargar varios GB en cada push.
+- El índice de ruedas está declarado en `pyproject.toml` (hoy `{{ indice_cuda }}`). **REGLA DURA:** se elige consultando <https://pytorch.org/get-started/locally/> según el driver instalado, nunca de memoria: los índices vigentes cambian con cada versión.
+- Otros paquetes del ecosistema, como torchaudio, se agregan explícitamente con el mismo índice después de verificar en pytorch.org que se publican para la versión en uso.
+
+## Verificación del dispositivo
+
+- **REGLA DURA.** Nada de `raise SystemError` incondicional cuando falta CUDA: rompe la depuración en CPU y el CI. Se usa `get_device(require_cuda=...)` de `src/{{ nombre_modulo }}/device.py`.
+- El modo de falla peligroso no es la ausencia de GPU, sino una rueda de torch compilada sin CUDA: todo corre en CPU, lento y sin error. `get_device()` lo distingue y lo reporta.
+- `requirements.txt` trae el índice de PyTorch en su cabecera. Quien instale con pip en Windows sin respetarlo recibe la rueda solo CPU, y `get_device()` se lo hará saber.
+
+## Presupuesto de VRAM
+
+Con GPUs de 8 GB o menos se asume por defecto *mixed precision* (`torch.amp.autocast`), acumulación de gradientes en lugar de *batches* grandes y liberación explícita de tensores intermedios en bucles largos.
+
+**REGLA DURA para asistentes.** Si una arquitectura propuesta no cabe en la VRAM disponible, se señala antes de escribir el entrenamiento.
+
+## Lista de verificación
+
+- [ ] El índice de PyTorch se verificó contra pytorch.org.
+- [ ] `get_device()` reporta la GPU esperada; nada corre en CPU sin aviso.
+- [ ] El entrenamiento cabe en la VRAM disponible.

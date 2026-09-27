@@ -32,6 +32,10 @@ el repositorio en GitHub.
 Un proyecto sin ninguno de los dos no trae carpetas vacías ni módulos que no
 aplican.
 
+Cada rasgo trae además su módulo del estándar en `docs/estandar/`, y `AGENTS.md`
+los importa para los asistentes de IA. Un proyecto recibe exactamente las reglas
+que le aplican, sin tener que deducirlas.
+
 ## Actualizar un proyecto al estándar más reciente
 
 Desde la raíz del proyecto, con el árbol de trabajo limpio:
@@ -91,6 +95,21 @@ Windows, Git con `core.autocrlf=true` convierte a CRLF al clonar, y Copier copia
 tal cual los archivos sin sufijo `.jinja`; los que sí lo llevan salen en LF
 porque Jinja normaliza los saltos de línea. Sin ese archivo, cada proyecto
 generado en Windows traería una mezcla de ambos.
+
+**Un rasgo, un módulo.** Cada pregunta booleana de `copier.yml` corresponde a un
+archivo en `plantilla/docs/estandar/`, condicionado por esa respuesta. Las
+reglas de un módulo no se condicionan por dentro: si una regla depende de un
+rasgo, va en el módulo de ese rasgo.
+
+**`AGENTS.md` es el archivo canónico; `CLAUDE.md`, un puente.** La mayoría de
+los asistentes de código lee `AGENTS.md`. Claude Code lo lee directamente desde
+la versión 2.1.277, pero solo si no hay `CLAUDE.md`; el puente con `@AGENTS.md`
+cubre las versiones anteriores y nunca lo carga dos veces. Ambos llevan sufijo
+`.jinja` para que el repositorio de la plantilla no los tome como propios.
+
+**Cada archivo del estándar, por debajo de 200 líneas.** Es la recomendación de
+Claude Code para no perder adherencia; las importaciones no la alivian, porque
+se cargan completas al iniciar.
 
 **Nombres de archivo condicionales sin comillas dobles.** Son ilegales en rutas
 de Windows; si una condición necesita comparar texto, usa comillas simples.
