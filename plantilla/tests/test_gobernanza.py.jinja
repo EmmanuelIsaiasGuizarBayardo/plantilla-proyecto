@@ -44,6 +44,16 @@ def test_autores_del_cff_en_creditos() -> None:
     assert not faltan, f"Autores de CITATION.cff sin sección en CREDITS.md: {faltan}"
 
 
+def test_nombres_de_pila_sin_apellidos() -> None:
+    """Los nombres de pila no repiten los apellidos."""
+    repetidos = [
+        _nombre(a)
+        for a in _cff()["authors"]
+        if a.get("family-names") and a.get("given-names", "").endswith(a["family-names"])
+    ]
+    assert not repetidos, f"Nombres de pila que repiten los apellidos: {repetidos}"
+
+
 def test_version_del_cff_coincide_con_pyproject() -> None:
     """La versión que se cita es la que se distribuye."""
     pyproject = tomllib.loads((RAIZ / "pyproject.toml").read_text(encoding="utf-8"))

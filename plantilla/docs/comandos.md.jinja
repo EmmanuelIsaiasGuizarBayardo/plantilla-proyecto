@@ -134,6 +134,21 @@ El editor también lo valida mientras escribes, porque cada archivo referencia e
 
 </details>
 {%- endif %}
+{%- if operacion_en_vivo %}
+
+<details>
+<summary><b>Antes de un evento</b></summary>
+
+En el equipo que se va a usar, con el montaje real:
+
+```
+uv run pytest -q
+```
+
+Después, recorre la lista de verificación de `docs/operacion.md`.
+
+</details>
+{%- endif %}
 
 <details>
 <summary><b>Calidad y pruebas</b></summary>

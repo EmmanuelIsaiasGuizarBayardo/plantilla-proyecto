@@ -31,6 +31,8 @@ el repositorio en GitHub.
 | DUNNE | Afiliación oficial, copyright compartido con la división, cláusula del logotipo |
 | Contenido didáctico | `content/` bajo CC BY 4.0 con su `LICENSE.md`, un esquema JSON, un archivo de texto inicial y su prueba; doble licencia en el CFF |
 | Datos de personas | Declaración obligatoria en el README, verificada por la prueba de gobernanza |
+| Operación en vivo | Guía del operador en `docs/operacion.md`, que después es del proyecto |
+| Señal externa | Módulo de ausencia explícita, compuerta, fuente simulada y pruebas sin hardware |
 
 Todos los proyectos llevan además `LICENSE` (MIT), `CITATION.cff`, `CREDITS.md` y
 `CONTRIBUTING.md`. Las preguntas de autoría pueden dejarse vacías: el proyecto se
@@ -60,12 +62,12 @@ revisarlos con `git diff`.
 
 ## Mantener la plantilla
 
-**Publicar una versión** es crear una etiqueta; `copier update` compara
-etiquetas, no commits sueltos:
+**Publicar una versión** es crear una etiqueta anotada; `copier update` compara
+etiquetas, no commits sueltos, y `--follow-tags` solo sube las anotadas:
 
 ```
-git tag v0.2.0
-git push --tags
+git tag -a v0.2.0 -m "Qué cambia en esta versión"
+git push --follow-tags
 ```
 
 **Probar cambios sin publicarlos.** Copier usa por defecto la etiqueta más
@@ -119,11 +121,12 @@ cubre las versiones anteriores y nunca lo carga dos veces. Ambos llevan sufijo
 Claude Code para no perder adherencia; las importaciones no la alivian, porque
 se cargan completas al iniciar.
 
-**Antigravity recibe los módulos por `.agents/rules/`.** Antigravity inserta
-archivos con `@[etiqueta](ruta)`; la sintaxis `@ruta` de `AGENTS.md` solo la
-convierte en referencia. `.agents/rules/estandar-dunne.md` los inserta con la
-sintaxis de Antigravity, y Claude Code no lee `.agents/`, así que cada herramienta
-ve una sola.
+**Antigravity recibe los módulos por `.agents/rules/`, una regla por módulo.**
+Antigravity inserta archivos con `@[etiqueta](ruta)`; la sintaxis `@ruta` de
+`AGENTS.md` solo la convierte en referencia. Cada módulo tiene su propia regla
+porque Antigravity trunca sin aviso cualquier regla que pase de 24,000 bytes tras
+expandir sus inclusiones, y una sola regla con todos los módulos ya ocupaba el 75%.
+Claude Code no lee `.agents/`, así que cada herramienta ve una sola sintaxis.
 
 **Dos nombres de la organización.** `org_nombre_completo`, para las afiliaciones
 del CFF, y `org_nombre_corto`, para avisos y atribuciones. Si cambian, se editan

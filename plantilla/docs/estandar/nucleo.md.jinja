@@ -29,7 +29,13 @@ proyectos.
 {%- if datos_de_personas %}
 - `datos-de-personas.md`: declaración de lo que se capta de las personas.
 {%- endif %}
-{%- if not (proyecto_dunne or investigacion or usa_gpu or contenido_didactico or datos_de_personas) %}
+{%- if operacion_en_vivo %}
+- `operacion-en-vivo.md`: arranque sin fallas, estados accionables y lo que ve el público.
+{%- endif %}
+{%- if senal_externa %}
+- `senal-externa.md`: ausencia explícita, compuerta, fuente simulada y pruebas sin hardware.
+{%- endif %}
+{%- if not (proyecto_dunne or investigacion or usa_gpu or contenido_didactico or datos_de_personas or operacion_en_vivo or senal_externa) %}
 Ninguno: este proyecto sigue solo el núcleo.
 {%- endif %}
 
