@@ -1,0 +1,22 @@
+# Autoverificacion de la plantilla en cada push y pull request. Necesita el
+# historial completo para actualizar un proyecto desde la version anterior.
+name: verificar-plantilla
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verificar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Instalar uv
+        run: curl -LsSf https://astral.sh/uv/install.sh | sh
+
+      - name: Verificar la plantilla
+        run: uv run pruebas/verificar_plantilla.py

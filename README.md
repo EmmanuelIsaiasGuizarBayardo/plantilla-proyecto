@@ -63,24 +63,37 @@ revisarlos con `git diff`.
 
 ## Mantener la plantilla
 
-**Publicar una versión** es crear una etiqueta anotada; `copier update` compara
-etiquetas, no commits sueltos, y `--follow-tags` solo sube las anotadas:
+Se edita directamente en este repositorio. El ciclo de una versión:
+
+1. Haz el cambio y regístralo en `CHANGELOG.md`.
+2. Verifica con `uv run pruebas/verificar_plantilla.py`. Genera un proyecto sin
+   rasgos y otro con todos; revisa módulos, reglas de Antigravity, importaciones,
+   límites de tamaño, codificación, Ruff y las pruebas del estándar; y actualiza
+   proyectos de la versión anterior, también apagando rasgos, para confirmar que
+   ningún archivo del proyecto se pierde. El CI corre lo mismo en cada push.
+3. Para mirar a mano un cambio sin publicarlo:
+   `uvx copier copy --trust --vcs-ref=HEAD . /tmp/prueba`. Copier usa por defecto
+   la última etiqueta, no el árbol de trabajo.
+4. Publica con una etiqueta anotada; `--follow-tags` solo sube las anotadas:
 
 ```
-git tag -a v0.2.0 -m "Qué cambia en esta versión"
+git tag -a v0.8.0 -m "Qué cambia en esta versión"
 git push --follow-tags
-```
-
-**Probar cambios sin publicarlos.** Copier usa por defecto la etiqueta más
-reciente, no el árbol de trabajo. Para probar un cambio local:
-
-```
-uvx copier copy --trust --vcs-ref=HEAD ruta/a/la/plantilla /tmp/prueba
 ```
 
 **Proyectos de DUNNE.** En la pregunta de GitHub, responde con el nombre de la
 organización, no con tu usuario. Un proyecto de la división creado en una cuenta
 personal queda huérfano cuando su autor deja la división.
+
+### Pendientes de gobernanza
+
+- Crear la organización de GitHub de DUNNE con al menos dos dueños.
+- Transferir esta plantilla a la organización y cambiar el valor por defecto de
+  `organizacion_github`. GitHub redirige los enlaces al transferir; no crees
+  después otro repositorio con el nombre anterior, o la redirección se rompe.
+- Neurona AR: la autorización por escrito de Mauricio Mendiola Rivera para
+  publicar el modelo bajo CC BY 4.0.
+- Un *stack* de sitio estático, si Neurona AR se reactiva o aparece otro proyecto así.
 
 ### Decisiones de diseño que no conviene deshacer
 
