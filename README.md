@@ -29,7 +29,7 @@ el repositorio en GitHub.
 | Investigación | `data/`, `notebooks/`, `results/`, módulo de reproducibilidad, pila científica (MNE, NumPy, SciPy, scikit-learn) |
 | GPU | Extra `gpu` con torch y torchvision desde el índice CUDA elegido, `device.py` con diagnóstico |
 | DUNNE | Afiliación oficial, copyright compartido con la división, cláusula del logotipo |
-| Contenido didáctico | `content/` bajo CC BY 4.0 con su propio `LICENSE.md`; doble licencia en el CFF |
+| Contenido didáctico | `content/` bajo CC BY 4.0 con su `LICENSE.md`, un esquema JSON, un archivo de texto inicial y su prueba; doble licencia en el CFF |
 | Datos de personas | Declaración obligatoria en el README, verificada por la prueba de gobernanza |
 
 Todos los proyectos llevan además `LICENSE` (MIT), `CITATION.cff`, `CREDITS.md` y
@@ -133,6 +133,12 @@ un estudiante agregó a mano con la versión anterior.
 **La licencia del contenido vive en `content/LICENSE.md`.** El directorio es la
 frontera de la licencia, y la raíz conserva un único archivo de licencia para que
 GitHub la detecte sin ambigüedad.
+
+**El contenido es del proyecto; sus reglas, de la plantilla.** `content/*.json` está
+en `_skip_if_exists`: la plantilla crea el esquema y un archivo inicial y nunca
+vuelve a tocarlos. Lo que no se negocia (estado de revisión declarado, nombres,
+claves ASCII, sin HTML) lo verifica `tests/test_contenido.py`, que sí es de la
+plantilla, así que se cumple aunque un proyecto reescriba su esquema.
 
 **Nombres de archivo condicionales sin comillas dobles.** Son ilegales en rutas
 de Windows; si una condición necesita comparar texto, usa comillas simples.

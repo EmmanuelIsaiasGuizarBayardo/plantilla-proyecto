@@ -39,6 +39,9 @@ dev = [
     "ruff",
     "pre-commit",
     "pyyaml",
+{%- if contenido_didactico %}
+    "jsonschema",
+{%- endif %}
 ]
 
 [build-system]

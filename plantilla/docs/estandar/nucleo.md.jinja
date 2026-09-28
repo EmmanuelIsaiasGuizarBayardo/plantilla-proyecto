@@ -49,6 +49,7 @@ Ninguno: este proyecto sigue solo el núcleo.
 
 - El código vive en `src/{{ nombre_modulo }}/`, instalado en modo editable. **REGLA DURA:** se importa como paquete (`from {{ nombre_modulo }} import ...`), nunca manipulando `sys.path`.
 - Las pruebas viven en `tests/` y corren con pytest; las utilidades del repositorio, en `tools/`.
+- **REGLA DURA.** Lo que produce un script no se edita a mano: se cambia el script y se vuelve a correr. Se versiona cuando alguien lo necesita sin poder correr el generador, como un servidor estático que lo entrega tal cual o quien instala con `requirements.txt`; en cualquier otro caso se regenera y queda fuera del repositorio.
 - Hay dos clases de archivo. Los que llevan el aviso "Archivo del estándar DUNNE" los mantiene la plantilla, y sus cambios se proponen allá. `main.py`, `__init__.py` y `utils.py` son del proyecto: la plantilla los crea una vez y no los vuelve a tocar.
 
 ## Datos de personas

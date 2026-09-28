@@ -2,7 +2,9 @@
 
 El código de este repositorio se distribuye bajo la licencia MIT (`LICENSE`, en la
 raíz). Este archivo cubre todo lo que vive en este directorio, `content/`, y
-cualquier documento que se genere a partir de él.
+cualquier documento que se genere a partir de él. Las variantes que un script
+produce desde un original, como otros formatos o resoluciones de un modelo, son
+derivados y se rigen por la misma licencia.
 
 El contenido se describe por su ubicación y no por una lista de archivos: una
 lista se desactualiza en cuanto alguien agrega uno; el directorio, no.
@@ -12,6 +14,7 @@ lista se desactualiza en cuanto alguien agrega uno; el directorio, no.
 - **El logotipo de DUNNE**, dondequiera que aparezca. Es un identificador de la organización: puede reproducirse al citar o redistribuir el proyecto, pero no para identificar trabajos derivados ni para dar a entender que DUNNE respalda un derivado.
 {%- endif %}
 - **Material de terceros**, que conserva sus propios términos. Su referencia está en `CITATION.cff` y su descripción en `CREDITS.md`.
+- **Las obras que el contenido cita**, que conservan sus derechos: se citan, no se reproducen.
 
 ## Bajo qué términos
 
@@ -27,6 +30,10 @@ enlace a la licencia e indique si realizó cambios.
 ## Cómo dar el crédito
 
 > Contenido didáctico de {{ nombre_proyecto }}, por sus autores (ver `CREDITS.md`){% if proyecto_dunne %}, {{ org_nombre_corto }}{% endif %}. Bajo CC BY 4.0.{% if organizacion_github %} https://github.com/{{ organizacion_github }}/{{ nombre_dist }}{% endif %}
+
+<!-- Si un componente tiene un creador propio que pide crédito, como un modelo 3D,
+     se nombra en la línea anterior: "Modelo 3D: Nombre Apellido. Contenido
+     didáctico de ..., por sus autores (ver CREDITS.md)...". -->
 
 Si se hicieron modificaciones, se indica: *"adaptado de"* en lugar de *"por"*.
 
@@ -51,4 +58,5 @@ requisito de fondo.
 El contenido describe fenómenos en lenguaje accesible. Las simplificaciones son
 deliberadas y están dirigidas al público general, no a uso clínico ni docente
 formal. Quien lo reutilice en un contexto académico debería contrastarlo con la
-literatura primaria; el repositorio no declara revisión por especialista.
+literatura primaria. El estado de la revisión por especialista se declara en el
+campo `review` de cada archivo de texto.

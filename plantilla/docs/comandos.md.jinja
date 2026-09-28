@@ -119,6 +119,21 @@ from {{ nombre_modulo }}.reproducibility import set_seed
 
 </details>
 {%- endif %}
+{%- if contenido_didactico %}
+
+<details>
+<summary><b>Contenido didáctico</b></summary>
+
+Validar el contenido contra `content/esquema.json`, con nombres, revisión, claves y marcado.
+
+```
+uv run pytest -q tests/test_contenido.py
+```
+
+El editor también lo valida mientras escribes, porque cada archivo referencia el esquema con `"$schema"`.
+
+</details>
+{%- endif %}
 
 <details>
 <summary><b>Calidad y pruebas</b></summary>

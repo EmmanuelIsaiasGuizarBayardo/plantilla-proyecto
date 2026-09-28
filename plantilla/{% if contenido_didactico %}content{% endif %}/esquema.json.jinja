@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Contenido didáctico de {{ nombre_proyecto }}",
+  "description": "Estructura de content/<ámbito>.<idioma>.json. Este archivo es del proyecto: adáptalo a tus entradas.",
+  "type": "object",
+  "required": ["review", "entradas"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "review": {
+      "description": "Estado de la revisión académica. Declararlo es obligatorio; aprobarlo, no.",
+      "type": "object",
+      "required": ["status"],
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "enum": ["sin_revision", "en_revision", "revisado"]
+        },
+        "revisor": {
+          "type": "string"
+        },
+        "fecha": {
+          "type": "string",
+          "format": "date"
+        }
+      }
+    },
+    "entradas": {
+      "description": "Una entrada por concepto. Las claves son ASCII sin diacríticos.",
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^[a-z0-9_]+$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "required": ["titulo", "corto"],
+        "additionalProperties": false,
+        "properties": {
+          "titulo": {
+            "type": "string",
+            "description": "Público: nombre visible, con acentuación normal."
+          },
+          "corto": {
+            "type": "string",
+            "description": "Público: texto breve que aparece primero."
+          },
+          "largo": {
+            "type": "string",
+            "description": "Público: texto del panel de más información."
+          },
+          "nota_personal": {
+            "type": "string",
+            "description": "Solo personal: guía para quien opera o imparte el taller."
+          }
+        }
+      }
+    }
+  }
+}

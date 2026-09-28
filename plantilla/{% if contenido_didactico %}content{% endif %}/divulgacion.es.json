@@ -1,0 +1,14 @@
+{
+  "$schema": "./esquema.json",
+  "review": {
+    "status": "sin_revision"
+  },
+  "entradas": {
+    "ejemplo": {
+      "titulo": "Ejemplo de entrada",
+      "corto": "Texto breve que ve el público. El *énfasis* va entre asteriscos.",
+      "largo": "Texto del panel de más información.",
+      "nota_personal": "Solo para quien opera: cómo explicar esta entrada en el taller."
+    }
+  }
+}

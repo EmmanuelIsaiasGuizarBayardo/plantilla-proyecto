@@ -13,6 +13,7 @@ _skip_if_exists:
   - "src/*/main.py"
   - "src/*/__init__.py"
   - "src/*/utils.py"
+  - "content/*.json"
 
 # Una sola tarea, a proposito: Copier aborta las tareas restantes si una falla.
 # El script ejecuta cada paso por separado y siempre termina bien.
