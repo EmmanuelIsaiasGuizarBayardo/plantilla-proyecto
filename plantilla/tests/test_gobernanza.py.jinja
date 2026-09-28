@@ -34,6 +34,25 @@ def test_sin_marcas_pendientes() -> None:
     archivos = ["CITATION.cff", "CREDITS.md"{% if datos_de_personas %}, "README.md"{% endif %}]
     pendientes = [f for f in archivos if MARCA in (RAIZ / f).read_text(encoding="utf-8")]
     assert not pendientes, f"Completa las marcas [COMPLETAR: ...] en: {', '.join(pendientes)}"
+{%- if datos_de_personas %}
+
+
+def test_readme_declara_datos_de_personas() -> None:
+    """El README tiene la sección que declara qué se capta de las personas."""
+    readme = (RAIZ / "README.md").read_text(encoding="utf-8")
+    assert re.search(r"^## Datos de personas\s*$", readme, flags=re.MULTILINE), (
+        "El README debe tener una sección '## Datos de personas' con la declaración"
+    )
+{%- endif %}
+{%- if operacion_en_vivo %}
+
+
+def test_existe_la_guia_del_operador() -> None:
+    """La guía del operador existe; los operadores rotan."""
+    assert (RAIZ / "docs" / "operacion.md").is_file(), (
+        "Falta docs/operacion.md: montaje, verificación previa, estados y cierre"
+    )
+{%- endif %}
 
 
 def test_autores_del_cff_en_creditos() -> None:

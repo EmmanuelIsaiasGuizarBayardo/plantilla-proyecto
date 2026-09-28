@@ -19,7 +19,11 @@ uv sync{% if usa_gpu %} --extra gpu{% endif %}
 Ejecutar el punto de entrada o cualquier script, sin activar nada.
 
 ```
+{%- if entrada_propia %}
+uv run python ruta/al/punto_de_entrada.py
+{%- else %}
 uv run python -m {{ nombre_modulo }}.main
+{%- endif %}
 uv run python ruta/al/script.py
 ```
 

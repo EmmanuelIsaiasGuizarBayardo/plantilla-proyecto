@@ -30,8 +30,11 @@ gpu = [
 ]
 {%- endif %}
 
+{%- if not entrada_propia %}
+
 [project.scripts]
 {{ nombre_dist }} = "{{ nombre_modulo }}.main:main"
+{%- endif %}
 
 [dependency-groups]
 dev = [

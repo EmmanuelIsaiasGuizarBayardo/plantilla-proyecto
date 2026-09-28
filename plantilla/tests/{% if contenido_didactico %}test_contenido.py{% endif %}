@@ -40,6 +40,11 @@ def _recorrer(nodo: object, ruta: str = "") -> Iterator[tuple[str, str, str]]:
         yield "cadena", ruta, nodo
 
 
+def test_existe_el_esquema() -> None:
+    """content/esquema.json existe; sin el, nada se puede validar."""
+    assert ESQUEMA.is_file(), "Falta content/esquema.json, que describe la estructura del contenido"
+
+
 def test_hay_contenido() -> None:
     """content/ tiene al menos un archivo de texto."""
     assert ARCHIVOS, "content/ no tiene archivos <ámbito>.<idioma>.json"

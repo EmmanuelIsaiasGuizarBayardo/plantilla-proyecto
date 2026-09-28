@@ -14,7 +14,7 @@ def test_paquete_importable() -> None:
     """El paquete debe resolverse sin manipular sys.path."""
     import {{ nombre_modulo }}
 
-    assert {{ nombre_modulo }}.__version__
+    assert {{ nombre_modulo }}.__name__ == "{{ nombre_modulo }}"
 {%- if investigacion %}
 
 

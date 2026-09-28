@@ -7,6 +7,19 @@ _min_copier_version: "9.0.0"
 _subdirectory: plantilla
 _answers_file: .copier-answers.yml
 
+# Archivos del proyecto que dependen de un rasgo: nacen con el proyecto y se
+# excluyen durante las actualizaciones. Asi Copier nunca los borra al apagar un
+# rasgo; excluirlos en la version nueva es su mecanismo para no tratarlos como
+# eliminados (copier-org/copier, discusion 2345). _copier_operation vale
+# 'update' tanto al renderizar la version vieja como la nueva.
+_exclude:
+  - "__pycache__"
+  - "*.py[co]"
+  - "{% if _copier_operation == 'update' %}src/*/main.py{% endif %}"
+  - "{% if _copier_operation == 'update' %}src/*/utils.py{% endif %}"
+  - "{% if _copier_operation == 'update' %}content/*.json{% endif %}"
+  - "{% if _copier_operation == 'update' %}docs/operacion.md{% endif %}"
+
 # Archivos que nacen de la plantilla y después pertenecen al estudiante: una
 # actualización nunca los toca.
 _skip_if_exists:
@@ -15,6 +28,9 @@ _skip_if_exists:
   - "src/*/utils.py"
   - "content/*.json"
   - "docs/operacion.md"
+  - "README.md"
+  - "CITATION.cff"
+  - "CREDITS.md"
 
 # Una sola tarea, a proposito: Copier aborta las tareas restantes si una falla.
 # El script ejecuta cada paso por separado y siempre termina bien.
@@ -69,6 +85,11 @@ python_version:
   help: Versión de Python
   choices: ["3.12", "3.13"]
   default: "3.12"
+
+entrada_propia:
+  type: bool
+  help: "¿Tiene su propio punto de entrada, como una app Dash con interfaz.py? (no se genera main.py)"
+  default: false
 
 investigacion:
   type: bool
