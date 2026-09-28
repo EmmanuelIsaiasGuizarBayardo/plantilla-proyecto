@@ -1,6 +1,7 @@
 <!-- Generado por la plantilla DUNNE; se actualiza con 'uvx copier update --trust'.
      Las lineas que empiezan con @ son importaciones: Claude Code carga esos
-     archivos al iniciar, y otras herramientas las leen como rutas. -->
+     archivos al iniciar, y otras herramientas las leen como rutas. Antigravity
+     los carga desde .agents/rules/estandar-dunne.md. -->
 
 # {{ nombre_proyecto }}
 
@@ -11,11 +12,20 @@ las de estos archivos; si tu herramienta no los carga sola, ábrelos antes de
 proponer cambios de estructura, entorno, dependencias o evaluación:
 
 @docs/estandar/nucleo.md
+{%- if proyecto_dunne %}
+@docs/estandar/dunne.md
+{%- endif %}
 {%- if investigacion %}
 @docs/estandar/investigacion.md
 {%- endif %}
 {%- if usa_gpu %}
 @docs/estandar/gpu.md
+{%- endif %}
+{%- if contenido_didactico %}
+@docs/estandar/contenido.md
+{%- endif %}
+{%- if datos_de_personas %}
+@docs/estandar/datos-de-personas.md
 {%- endif %}
 
 Propósito, puesta en marcha y comandos del proyecto:

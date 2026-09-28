@@ -47,6 +47,21 @@ descripcion:
   help: Una línea que describa el proyecto
   default: "Pendiente: objetivo del repositorio."
 
+autor_nombres:
+  type: str
+  help: "Tu nombre o nombres, como deben aparecer al citar (vacío = completar después)"
+  default: ""
+
+autor_apellidos:
+  type: str
+  help: "Tus apellidos (vacío = completar después)"
+  default: ""
+
+proyecto_dunne:
+  type: bool
+  help: "¿Es un proyecto de DUNNE? (afiliación, copyright y logotipo de la división)"
+  default: true
+
 python_version:
   type: str
   help: Versión de Python
@@ -69,6 +84,16 @@ indice_cuda:
   default: cu130
   when: "{{ usa_gpu }}"
 
+contenido_didactico:
+  type: bool
+  help: "¿Incluye contenido didáctico no-software, como textos o modelos 3D? (agrega content/ bajo CC BY 4.0)"
+  default: false
+
+datos_de_personas:
+  type: bool
+  help: "¿Capta señales o datos de personas, aunque no los guarde? (exige declararlo en el README)"
+  default: false
+
 organizacion_github:
   type: str
   help: "Cuenta u organización de GitHub donde crear el repositorio (vacío = no crear)"
@@ -83,4 +108,22 @@ nombre_modulo:
 nombre_dist:
   type: str
   default: "{{ nombre_proyecto | lower | replace(' ', '-') | replace('_', '-') }}"
+  when: false
+
+# Nombre de la organización: se edita aquí una sola vez y 'copier update' lo
+# lleva a todos los proyectos. El completo va en las afiliaciones del CFF; el
+# corto, en avisos y atribuciones.
+org_nombre_completo:
+  type: str
+  default: "División Universitaria de Neuroingeniería (DUNNE), Departamento de Ingeniería en Sistemas Biomédicos (DISB), División de Ingeniería Mecánica e Industrial (DIMEI), Facultad de Ingeniería (FI), Universidad Nacional Autónoma de México (UNAM)"
+  when: false
+
+org_nombre_corto:
+  type: str
+  default: "División Universitaria de Neuroingeniería (DUNNE) - Universidad Nacional Autónoma de México (UNAM)"
+  when: false
+
+autor_completo:
+  type: str
+  default: "{{ autor_nombres or '[COMPLETAR: nombres]' }} {{ autor_apellidos or '[COMPLETAR: apellidos]' }}"
   when: false

@@ -161,12 +161,22 @@ Ver cambios sin paginador.
 git --no-pager diff --stat
 ```
 
-Etiquetar una versión antes de una presentación pública.
+</details>
+
+<details>
+<summary><b>Publicar una versión</b></summary>
+
+Antes de cada presentación pública. Primero sube el número en `pyproject.toml` y en
+`CITATION.cff` (`version`), y fija `date-released` en el CFF con la fecha de hoy.
 
 ```
+uv run pytest -q
+git commit -am "Publicar la versión 1.0.0"
 git tag -a v1.0.0 -m "Evento donde se presentó"
-git push --tags
+git push --follow-tags
 ```
+
+La prueba de gobernanza falla si las dos versiones no coinciden.
 
 </details>
 
@@ -177,7 +187,12 @@ Traer las mejoras del estándar, con el árbol limpio. Sin `--defaults`, pregunt
 
 ```
 uvx copier update --trust
+git --no-pager diff --stat
+git add -A
+git commit -m "Actualizar a la plantilla DUNNE"
 ```
+
+El commit final no es opcional: sin él, la siguiente actualización encuentra el árbol sucio y se niega a correr.
 
 Ver qué versión de la plantilla tiene este proyecto.
 

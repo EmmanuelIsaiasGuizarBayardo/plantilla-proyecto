@@ -61,6 +61,45 @@ Para agregar una dependencia: `uv add <paquete>`. Al hacer commit, un hook regen
 `uv.lock` y `requirements.txt`; si los modifica, el commit se detiene a propósito y
 basta con volver a agregar los archivos.
 
+## Licencia
+{% if contenido_didactico %}
+| Qué | Licencia |
+|---|---|
+| Código | **MIT** (`LICENSE`) |
+| Contenido didáctico, en `content/` | **CC BY 4.0** (`content/LICENSE.md`) |
+{%- if proyecto_dunne %}
+| Logotipo de DUNNE | reservado; ver `content/LICENSE.md` |
+{%- endif %}
+
+Las dos licencias permiten *fork*, modificación, redistribución y uso con cualquier
+finalidad, incluso comercial, y las dos exigen mantener el crédito. Se separan
+porque las licencias Creative Commons no son adecuadas para software, y las de
+software no están pensadas para textos didácticos.
+{%- else %}
+El código se distribuye bajo la licencia MIT (`LICENSE`).
+{%- endif %}
+{%- if datos_de_personas %}
+
+## Datos de personas
+
+<!-- Declaración obligatoria: qué se capta, de quién, dónde vive y cuánto dura.
+     Si el proyecto sí guarda datos, reemplaza el párrafo por qué se guarda,
+     dónde, por cuánto tiempo y con qué consentimiento. -->
+
+**Señal de personas.** [COMPLETAR: qué se capta y de quién]. Se mantiene en
+memoria mientras dura la sesión y no se escribe a disco; ningún componente la
+persiste. Este repositorio no contiene datos personales.
+
+**Marco legal.** Esta declaración es técnica, no un aviso de privacidad. Revisó si
+hace falta uno: [COMPLETAR: quién y cuándo, o "pendiente"].
+{%- endif %}
+
+## Créditos
+
+Los roles de cada persona, en taxonomía CRediT, están en `CREDITS.md`. Para citar
+el proyecto, GitHub genera la referencia desde `CITATION.cff` con el botón
+**Cite this repository**. Para contribuir, ver `CONTRIBUTING.md`.
+
 ## Estándar DUNNE
 
 Este proyecto nació de la plantilla DUNNE. Las reglas que le aplican están en

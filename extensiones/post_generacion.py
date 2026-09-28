@@ -110,7 +110,11 @@ def resumen(es_nuevo: bool) -> None:
     else:
         print("\nTodo listo." if es_nuevo else "\nActualizacion aplicada.")
     if not es_nuevo:
-        print("\nRevisa los cambios con 'git diff' antes de commitear.")
+        print("\nRevisa los cambios y commitealos de inmediato, o la siguiente")
+        print("actualizacion encontrara el arbol sucio:")
+        print("  git --no-pager diff --stat")
+        print("  git add -A")
+        print('  git commit -m "Actualizar a la plantilla DUNNE"')
     print()
 
 
@@ -241,6 +245,19 @@ def main() -> int:
             )
         else:
             ejecutar("Repositorio en GitHub", crear.split(), remedio=crear)
+
+    # Declaraciones obligatorias a medias: no bloquean, pero el CI fallara.
+    marcados = [
+        nombre
+        for nombre in ("CITATION.cff", "CREDITS.md", "README.md")
+        if Path(nombre).is_file()
+        and "[COMPLETAR" in Path(nombre).read_text(encoding="utf-8")
+    ]
+    if marcados:
+        omitir(
+            "Declaraciones por completar",
+            f"Llena las marcas [COMPLETAR: ...] en {', '.join(marcados)}; el CI falla hasta entonces",
+        )
 
     resumen(es_nuevo)
     return 0

@@ -14,13 +14,22 @@ Lo que aplica a este proyecto es este núcleo más los módulos presentes en
 proyectos.
 
 ## Módulos de este proyecto
-{% if investigacion %}
+{% if proyecto_dunne %}
+- `dunne.md`: nombre de la organización, titularidad, logotipo y repositorio.
+{%- endif %}
+{%- if investigacion %}
 - `investigacion.md`: datos, libretas, reproducibilidad y fuga de datos.
 {%- endif %}
 {%- if usa_gpu %}
 - `gpu.md`: PyTorch, CUDA y presupuesto de VRAM.
 {%- endif %}
-{%- if not (investigacion or usa_gpu) %}
+{%- if contenido_didactico %}
+- `contenido.md`: frontera y licencia del contenido didáctico.
+{%- endif %}
+{%- if datos_de_personas %}
+- `datos-de-personas.md`: declaración de lo que se capta de las personas.
+{%- endif %}
+{%- if not (proyecto_dunne or investigacion or usa_gpu or contenido_didactico or datos_de_personas) %}
 Ninguno: este proyecto sigue solo el núcleo.
 {%- endif %}
 
@@ -56,12 +65,19 @@ Ninguno: este proyecto sigue solo el núcleo.
 ## Git y GitHub
 
 - Rama principal `main`. El CI (Ruff y pytest) debe pasar antes de integrar cambios.
-- **PREFERENCIA.** Los proyectos de DUNNE viven en la organización de GitHub, no en cuentas personales: un proyecto en la cuenta de un estudiante queda huérfano cuando se va.
+
+## Gobernanza
+
+- **REGLA DURA.** `LICENSE` contiene solo el texto MIT. Nada se le agrega después: el detector de GitHub exige casi el texto exacto y dejaría el repositorio sin licencia reconocida. Las aclaraciones van en el README.
+- `CITATION.cff` es la fuente de la cita; GitHub genera desde ahí el botón *Cite this repository*. Las referencias formales a datos y software de terceros viven solo en su sección `references`.
+- `CREDITS.md` asigna a cada persona sus roles CRediT, con una narrativa que coincide con ellos. La narrativa describe aportaciones, no cargos.
+- **REGLA DURA.** Todo autor del CFF tiene su sección en `CREDITS.md`, y la versión del CFF es la de `pyproject.toml`. `tests/test_gobernanza.py` lo verifica, y las marcas `[COMPLETAR: ...]` hacen fallar el CI hasta que se completan.
+- Antes de cada presentación pública se publica una versión con etiqueta anotada que nombra el evento (ver `docs/comandos.md`).
 
 ## Actualizar el estándar
 
-- Con el árbol limpio: `uvx copier update --trust`. Los cambios quedan sin commitear para revisarlos con `git diff`.
-- `docs/estandar/`, `AGENTS.md` y `CLAUDE.md` se regeneran; no se editan. Las notas propias para asistentes van en la sección final de `AGENTS.md`, que la actualización conserva.
+- Con el árbol limpio: `uvx copier update --trust`. Los cambios quedan sin commitear: se revisan con `git diff` y se commitean de inmediato, o la siguiente actualización encontrará el árbol sucio.
+- `docs/estandar/`, `AGENTS.md`, `CLAUDE.md` y `.agents/rules/` se regeneran; no se editan. Las notas propias para asistentes van en la sección final de `AGENTS.md`, que la actualización conserva.
 
 ## Lista de verificación
 

@@ -28,8 +28,16 @@ el repositorio en GitHub.
 |---|---|
 | Investigación | `data/`, `notebooks/`, `results/`, módulo de reproducibilidad, pila científica (MNE, NumPy, SciPy, scikit-learn) |
 | GPU | Extra `gpu` con torch y torchvision desde el índice CUDA elegido, `device.py` con diagnóstico |
+| DUNNE | Afiliación oficial, copyright compartido con la división, cláusula del logotipo |
+| Contenido didáctico | `content/` bajo CC BY 4.0 con su propio `LICENSE.md`; doble licencia en el CFF |
+| Datos de personas | Declaración obligatoria en el README, verificada por la prueba de gobernanza |
 
-Un proyecto sin ninguno de los dos no trae carpetas vacías ni módulos que no
+Todos los proyectos llevan además `LICENSE` (MIT), `CITATION.cff`, `CREDITS.md` y
+`CONTRIBUTING.md`. Las preguntas de autoría pueden dejarse vacías: el proyecto se
+genera con marcas `[COMPLETAR: ...]`, el resumen final las señala y el CI falla
+hasta llenarlas.
+
+Un proyecto sin rasgos activos no trae carpetas vacías ni módulos que no
 aplican.
 
 Cada rasgo trae además su módulo del estándar en `docs/estandar/`, y `AGENTS.md`
@@ -110,6 +118,21 @@ cubre las versiones anteriores y nunca lo carga dos veces. Ambos llevan sufijo
 **Cada archivo del estándar, por debajo de 200 líneas.** Es la recomendación de
 Claude Code para no perder adherencia; las importaciones no la alivian, porque
 se cargan completas al iniciar.
+
+**Antigravity recibe los módulos por `.agents/rules/`.** Antigravity inserta
+archivos con `@[etiqueta](ruta)`; la sintaxis `@ruta` de `AGENTS.md` solo la
+convierte en referencia. `.agents/rules/estandar-dunne.md` los inserta con la
+sintaxis de Antigravity, y Claude Code no lee `.agents/`, así que cada herramienta
+ve una sola.
+
+**Dos nombres de la organización.** `org_nombre_completo`, para las afiliaciones
+del CFF, y `org_nombre_corto`, para avisos y atribuciones. Si cambian, se editan
+una sola vez en `copier.yml`; la prueba de gobernanza detecta las afiliaciones que
+un estudiante agregó a mano con la versión anterior.
+
+**La licencia del contenido vive en `content/LICENSE.md`.** El directorio es la
+frontera de la licencia, y la raíz conserva un único archivo de licencia para que
+GitHub la detecte sin ambigüedad.
 
 **Nombres de archivo condicionales sin comillas dobles.** Son ilegales en rutas
 de Windows; si una condición necesita comparar texto, usa comillas simples.

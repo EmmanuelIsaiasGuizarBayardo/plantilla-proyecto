@@ -1,7 +1,7 @@
 [project]
 name = "{{ nombre_dist }}"
 version = "0.1.0"
-description = {{ descripcion | tojson }}
+description = "{{ descripcion | replace('\\', '\\\\') | replace('"', '\\"') }}"
 readme = "README.md"
 requires-python = ">={{ python_version }}"
 
@@ -38,6 +38,7 @@ dev = [
     "pytest",
     "ruff",
     "pre-commit",
+    "pyyaml",
 ]
 
 [build-system]

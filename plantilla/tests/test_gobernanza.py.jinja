@@ -1,0 +1,63 @@
+"""Pruebas de gobernanza: autoría, versión y declaraciones completas.
+
+Archivo del estandar DUNNE: se actualiza con 'copier update'.
+"""
+
+from __future__ import annotations
+
+import re
+import tomllib
+from pathlib import Path
+
+import yaml
+
+RAIZ = Path(__file__).resolve().parent.parent
+MARCA = "[COMPLETAR"
+{%- if proyecto_dunne %}
+# Se genera desde copier.yml: una sola linea, aunque exceda el ancho.
+AFILIACION_OFICIAL = "{{ org_nombre_completo }}"  # noqa: E501
+{%- endif %}
+
+
+def _cff() -> dict:
+    """Lee CITATION.cff."""
+    return yaml.safe_load((RAIZ / "CITATION.cff").read_text(encoding="utf-8"))
+
+
+def _nombre(autor: dict) -> str:
+    """Nombre completo de un autor del CFF, como aparece en CREDITS.md."""
+    return f"{autor.get('given-names', '')} {autor.get('family-names', '')}".strip()
+
+
+def test_sin_marcas_pendientes() -> None:
+    """Ninguna declaración obligatoria queda a medias."""
+    archivos = ["CITATION.cff", "CREDITS.md"{% if datos_de_personas %}, "README.md"{% endif %}]
+    pendientes = [f for f in archivos if MARCA in (RAIZ / f).read_text(encoding="utf-8")]
+    assert not pendientes, f"Completa las marcas [COMPLETAR: ...] en: {', '.join(pendientes)}"
+
+
+def test_autores_del_cff_en_creditos() -> None:
+    """Cada autor que aparece al citar tiene su sección de roles."""
+    creditos = (RAIZ / "CREDITS.md").read_text(encoding="utf-8")
+    secciones = set(re.findall(r"^### (.+?)\s*$", creditos, flags=re.MULTILINE))
+    faltan = [_nombre(a) for a in _cff()["authors"] if _nombre(a) not in secciones]
+    assert not faltan, f"Autores de CITATION.cff sin sección en CREDITS.md: {faltan}"
+
+
+def test_version_del_cff_coincide_con_pyproject() -> None:
+    """La versión que se cita es la que se distribuye."""
+    pyproject = tomllib.loads((RAIZ / "pyproject.toml").read_text(encoding="utf-8"))
+    esperada = pyproject["project"]["version"]
+    assert str(_cff()["version"]) == esperada, f"CITATION.cff debe declarar la versión {esperada}"
+{%- if proyecto_dunne %}
+
+
+def test_afiliaciones_a_dunne_son_oficiales() -> None:
+    """Toda afiliación que menciona a DUNNE usa el nombre oficial, sin variantes."""
+    distintas = [
+        _nombre(a)
+        for a in _cff()["authors"]
+        if "DUNNE" in a.get("affiliation", "") and a["affiliation"] != AFILIACION_OFICIAL
+    ]
+    assert not distintas, f"Afiliación a DUNNE distinta de la oficial en: {distintas}"
+{%- endif %}
