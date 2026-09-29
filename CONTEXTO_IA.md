@@ -79,11 +79,11 @@ afiliación ni logotipo.
 
 Las figuras de investigación usan la biblioteca `figuras-cientificas`, que vive
 aparte de la plantilla porque no todo proyecto la necesita. En el proyecto, se
-agrega con la etiqueta más reciente (hoy `v0.1.1`) y se instalan sus reglas para
+agrega con la etiqueta más reciente (hoy `v0.1.2`) y se instalan sus reglas para
 Antigravity:
 
 ```powershell
-uv add git+https://github.com/EmmanuelIsaiasGuizarBayardo/figuras-cientificas --tag v0.1.1
+uv add git+https://github.com/EmmanuelIsaiasGuizarBayardo/figuras-cientificas --tag v0.1.2
 uv run python -m figuras_cientificas regla
 ```
 
