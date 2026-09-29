@@ -3,6 +3,15 @@
 Cada versión es una etiqueta anotada. Un proyecto la recibe con
 `uvx copier update --trust`; sin `--defaults`, Copier pregunta los rasgos nuevos.
 
+## v0.8.0
+
+- `tools/publicar.py`: publicar una versión en un solo comando, que se detiene antes de
+  etiquetar si algo falla y no reutiliza etiquetas.
+- `tools/sincronizar_cff.py`: versión y fecha de lanzamiento de `CITATION.cff` desde
+  `pyproject.toml`.
+- `.github/workflows/etiqueta.yml`: cada etiqueta debe coincidir con la versión del paquete.
+- El núcleo y el chuletario enseñan el comando en lugar de los pasos a mano.
+
 ## v0.7.0
 
 - Autoverificación de la plantilla (`pruebas/verificar_plantilla.py`) y su CI.

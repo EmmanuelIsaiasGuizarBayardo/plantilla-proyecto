@@ -1,6 +1,6 @@
 # Contexto para asistentes: proyectos con la plantilla DUNNE
 
-> Instantánea de la plantilla **v0.7.0**. La fuente de verdad es el repositorio
+> Instantánea de la plantilla **v0.8.0**. La fuente de verdad es el repositorio
 > `EmmanuelIsaiasGuizarBayardo/plantilla-proyecto`: su README explica las
 > decisiones de diseño y su `CHANGELOG.md`, cada versión. Si algo de aquí
 > contradice al repositorio, manda el repositorio.
@@ -67,8 +67,9 @@ afiliación ni logotipo.
 - Las reglas están en `docs/estandar/`: un núcleo y un módulo por rasgo activo.
   Un módulo ausente no aplica. Los comandos frecuentes, en `docs/comandos.md`.
 - Son del estándar y se regeneran: `docs/estandar/`, `AGENTS.md`, `CLAUDE.md`,
-  `.agents/rules/`, `LICENSE`, `.github/workflows/ci.yml` y las pruebas del
-  estándar. Sus cambios se proponen en la plantilla.
+  `.agents/rules/`, `LICENSE`, `.github/workflows/ci.yml` y `etiqueta.yml`, las
+  pruebas del estándar y, en `tools/`, `export_requirements.py`, `publicar.py` y
+  `sincronizar_cff.py`. Sus cambios se proponen en la plantilla.
 - Son del proyecto y la plantilla no los toca: `README.md`, `CITATION.cff`,
   `CREDITS.md`, `content/*.json`, `docs/operacion.md`, `__init__.py`, `main.py`
   y `utils.py`.
@@ -116,8 +117,10 @@ Así se adoptó NeuroDAC:
   regenera solo con `uv run python tools/export_requirements.py`.
 - Ningún dato de personas entra al repositorio, sea público o privado.
 - `LICENSE` contiene solo el texto MIT; las aclaraciones van en el README.
-- La versión de `pyproject.toml` y la de `CITATION.cff` coinciden. Las versiones
-  se publican con etiqueta anotada (`git tag -a`) y `git push --follow-tags`.
+- Una versión se publica con `uv run python tools/publicar.py X.Y.Z "mensaje"`, que
+  sube el número, sincroniza `CITATION.cff`, corre las pruebas, etiqueta y sube, y se
+  detiene antes de etiquetar si algo falla. Nunca se etiqueta a mano, y una etiqueta
+  publicada no se mueve: si salió mal, se publica la siguiente versión.
 - Si una petición viola una REGLA DURA del estándar, se señala antes de escribir
   código.
 
@@ -146,3 +149,5 @@ algo de este archivo, se actualiza en el mismo commit.
 - Crear la organización de GitHub de DUNNE con al menos dos dueños.
 - Transferir la plantilla a esa organización y cambiar el valor por defecto de
   `organizacion_github`; después, no crear otro repositorio con el nombre anterior.
+- Neurona AR: autorización por escrito de Mauricio Mendiola Rivera para el modelo.
+- Un *stack* de sitio estático, si Neurona AR se reactiva o aparece otro proyecto así.

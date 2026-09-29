@@ -171,5 +171,11 @@ un rasgo borraba esos archivos aunque el estudiante los hubiera editado; lo reve
 la prueba de aceptación con NeuroDAC. El costo: activar un rasgo en un proyecto
 existente no crea su esquema ni su guía, y las pruebas dicen qué falta.
 
+**Las versiones se publican con un solo comando.** `tools/publicar.py` encadena el
+número de versión, la cita, los requisitos, las pruebas, el commit, la etiqueta y el
+push, y se detiene antes de etiquetar si algo falla. Publicar a mano, en varios pasos,
+dejó dos veces una etiqueta cuyo paquete declaraba otra versión; `etiqueta.yml` lo
+marca en rojo si alguien vuelve a hacerlo.
+
 **Nombres de archivo condicionales sin comillas dobles.** Son ilegales en rutas
 de Windows; si una condición necesita comparar texto, usa comillas simples.
