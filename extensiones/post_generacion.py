@@ -81,9 +81,7 @@ def gh_autenticado() -> bool:
     """Indica si GitHub CLI tiene una sesion activa."""
     try:
         return (
-            subprocess.run(
-                ["gh", "auth", "status"], capture_output=True, check=False
-            ).returncode
+            subprocess.run(["gh", "auth", "status"], capture_output=True, check=False).returncode
             == 0
         )
     except OSError:
@@ -95,7 +93,7 @@ def a_bool(valor: str) -> bool:
     return valor.strip().lower() in {"true", "1", "yes", "si"}
 
 
-def resumen(es_nuevo: bool) -> None:
+def resumen(es_nuevo: bool, usa_gpu: bool = False) -> None:
     """Imprime el estado final y los comandos para completar lo pendiente."""
     pendientes = [r for r in RESULTADOS if not r.ok]
     print("\n" + "=" * 72)
@@ -110,9 +108,13 @@ def resumen(es_nuevo: bool) -> None:
     else:
         print("\nTodo listo." if es_nuevo else "\nActualizacion aplicada.")
     if not es_nuevo:
-        print("\nRevisa los cambios y commitealos de inmediato, o la siguiente")
-        print("actualizacion encontrara el arbol sucio:")
+        sync = "uv sync --extra gpu" if usa_gpu else "uv sync"
+        print("\nEl entorno no se toco: Copier corre esta tarea antes de reaplicar los")
+        print("cambios del proyecto. Sincroniza ahora, sobre el pyproject.toml final, y")
+        print("commitea de inmediato, o la siguiente actualizacion encontrara el arbol sucio:")
         print("  git --no-pager diff --stat")
+        print(f"  {sync}")
+        print("  uv run python tools/export_requirements.py")
         print("  git add -A")
         print('  git commit -m "Actualizar a la plantilla DUNNE"')
     print()
@@ -149,11 +151,18 @@ def main() -> int:
             "Entorno de Python",
             "Instala uv (https://docs.astral.sh/uv/) y corre: uv sync",
         )
-        resumen(es_nuevo)
+        resumen(es_nuevo, usa_gpu)
         return 0
 
     sync = ["uv", "sync", *(["--extra", "gpu"] if usa_gpu else [])]
-    sincronizado = ejecutar("Sincronizar entorno", sync)
+    if es_nuevo:
+        sincronizado = ejecutar("Sincronizar entorno", sync)
+    else:
+        # En una actualizacion, Copier corre esta tarea antes de reaplicar los
+        # cambios del proyecto: pyproject.toml es todavia el de la plantilla, sin
+        # las dependencias propias. Sincronizar aqui las desinstalaria y reescribiria
+        # uv.lock sin ellas. El resumen indica sincronizar despues, sobre el final.
+        sincronizado = False
 
     if sincronizado:
         ejecutar(
@@ -197,9 +206,7 @@ def main() -> int:
     if es_nuevo and sincronizado:
         # Normaliza lo generado para que el primer commit ya este limpio.
         ejecutar("Formatear codigo", ["uv", "run", "ruff", "format", "--quiet", "."])
-        ejecutar(
-            "Corregir lint", ["uv", "run", "ruff", "check", ".", "--fix", "--quiet"]
-        )
+        ejecutar("Corregir lint", ["uv", "run", "ruff", "check", ".", "--fix", "--quiet"])
 
     commit_ok = False
     if es_nuevo and hay_repo and not sincronizado:
@@ -240,9 +247,7 @@ def main() -> int:
         elif not gh_autenticado():
             omitir("Repositorio en GitHub", f"gh auth login; luego: {crear}")
         elif not commit_ok:
-            omitir(
-                "Repositorio en GitHub", f"Completa el commit inicial y corre: {crear}"
-            )
+            omitir("Repositorio en GitHub", f"Completa el commit inicial y corre: {crear}")
         else:
             ejecutar("Repositorio en GitHub", crear.split(), remedio=crear)
 
@@ -250,8 +255,7 @@ def main() -> int:
     marcados = [
         nombre
         for nombre in ("CITATION.cff", "CREDITS.md", "README.md")
-        if Path(nombre).is_file()
-        and "[COMPLETAR" in Path(nombre).read_text(encoding="utf-8")
+        if Path(nombre).is_file() and "[COMPLETAR" in Path(nombre).read_text(encoding="utf-8")
     ]
     if marcados:
         omitir(
@@ -259,7 +263,7 @@ def main() -> int:
             f"Llena las marcas [COMPLETAR: ...] en {', '.join(marcados)}; el CI falla hasta entonces",
         )
 
-    resumen(es_nuevo)
+    resumen(es_nuevo, usa_gpu)
     return 0
 
 

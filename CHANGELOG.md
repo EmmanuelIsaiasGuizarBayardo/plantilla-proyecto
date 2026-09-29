@@ -3,6 +3,15 @@
 Cada versión es una etiqueta anotada. Un proyecto la recibe con
 `uvx copier update --trust`; sin `--defaults`, Copier pregunta los rasgos nuevos.
 
+## v0.8.1
+
+- En una actualización, la tarea de puesta en marcha ya no toca el entorno: Copier la
+  corre antes de reaplicar los cambios del proyecto, y sincronizar ahí desinstalaba las
+  dependencias propias y reescribía `uv.lock` sin ellas. El resumen indica `uv sync` y
+  el export para después; la autoverificación prueba el caso.
+- `tools/publicar.py` consulta también las etiquetas de GitHub y sube la etiqueta de
+  forma explícita: una etiqueta borrada solo en la máquina ya no se republica en silencio.
+
 ## v0.8.0
 
 - `tools/publicar.py`: publicar una versión en un solo comando, que se detiene antes de

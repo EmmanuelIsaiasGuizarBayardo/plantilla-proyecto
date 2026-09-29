@@ -318,6 +318,42 @@ def prueba_de_actualizacion(base: Path) -> None:
             )
 
 
+def prueba_de_dependencias_propias(base: Path) -> None:
+    """Actualizar con las tareas activas conserva las dependencias propias.
+
+    Copier corre las tareas antes de reaplicar los cambios del proyecto, sobre un
+    pyproject.toml que todavía es el de la plantilla. Una tarea que sincronizara el
+    entorno en ese momento reescribiría uv.lock sin las dependencias propias.
+    """
+    anterior = correr(["git", "describe", "--tags", "--abbrev=0", "HEAD~1"], RAIZ).stdout.strip()
+    if not anterior:
+        ok("dependencias propias: no hay version anterior; se omite")
+        return
+    destino = base / "con_dependencia"
+    datos = {
+        "nombre_proyecto": "con_dependencia",
+        "autor_nombres": "Ana",
+        "autor_apellidos": "Ruiz",
+    }
+    if copier(["copy", f"--vcs-ref={anterior}", str(RAIZ), str(destino)], datos, base).returncode:
+        falla(f"dependencias propias: no se pudo generar desde {anterior}")
+        return
+    agregar = correr(["uv", "add", "--quiet", "six"], destino)
+    if agregar.returncode:
+        falla(f"dependencias propias: uv add fallo\n{agregar.stderr[-600:]}")
+        return
+    for paso in (["init", "-q", "-b", "main"], ["add", "-A"], ["commit", "-qm", "base"]):
+        correr([*GIT, *paso], destino)
+    orden = ["uvx", "copier", "update", "--trust", "--defaults", "--quiet", "--vcs-ref=HEAD"]
+    r = correr(orden, destino)
+    if r.returncode:
+        falla(f"dependencias propias: copier update con tareas fallo\n{r.stderr[-800:]}")
+    elif 'name = "six"' not in (destino / "uv.lock").read_text(encoding="utf-8"):
+        falla("dependencias propias: la actualizacion con tareas reescribio uv.lock sin ellas")
+    else:
+        ok(f"dependencias propias: actualizar con tareas desde {anterior} conserva uv.lock")
+
+
 def main() -> int:
     """Corre todas las comprobaciones y devuelve 1 si alguna falla."""
     todos = rasgos()
@@ -342,6 +378,7 @@ def main() -> int:
                 continue
             revisar_proyecto(nombre, destino)
         prueba_de_actualizacion(base)
+        prueba_de_dependencias_propias(base)
     print(f"\n{'Todo en orden.' if not FALLAS else f'{len(FALLAS)} falla(s).'}")
     return 1 if FALLAS else 0
 

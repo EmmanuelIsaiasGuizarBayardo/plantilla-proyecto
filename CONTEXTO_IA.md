@@ -1,6 +1,6 @@
 # Contexto para asistentes: proyectos con la plantilla DUNNE
 
-> Instantánea de la plantilla **v0.8.0**. La fuente de verdad es el repositorio
+> Instantánea de la plantilla **v0.8.1**. La fuente de verdad es el repositorio
 > `EmmanuelIsaiasGuizarBayardo/plantilla-proyecto`: su README explica las
 > decisiones de diseño y su `CHANGELOG.md`, cada versión. Si algo de aquí
 > contradice al repositorio, manda el repositorio.
@@ -73,8 +73,10 @@ afiliación ni logotipo.
 - Son del proyecto y la plantilla no los toca: `README.md`, `CITATION.cff`,
   `CREDITS.md`, `content/*.json`, `docs/operacion.md`, `__init__.py`, `main.py`
   y `utils.py`.
-- Actualizar: `uvx copier update --trust` con el árbol limpio, revisar con
-  `git diff` y commitear de inmediato. Sin `--defaults`, pregunta los rasgos nuevos.
+- Actualizar: `uvx copier update --trust` con el árbol limpio; luego `uv sync` y
+  `uv run python tools/export_requirements.py`, porque la actualización no toca el
+  entorno; revisar con `git diff` y commitear de inmediato. Sin `--defaults`,
+  pregunta los rasgos nuevos.
 
 ## Figuras de investigación
 

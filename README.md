@@ -171,6 +171,12 @@ un rasgo borraba esos archivos aunque el estudiante los hubiera editado; lo reve
 la prueba de aceptación con NeuroDAC. El costo: activar un rasgo en un proyecto
 existente no crea su esquema ni su guía, y las pruebas dicen qué falta.
 
+**En una actualización, la tarea no toca el entorno.** Copier corre las tareas
+antes de reaplicar los cambios del proyecto, cuando `pyproject.toml` todavía es el de la
+plantilla. Sincronizar en ese momento desinstalaba las dependencias propias y reescribía
+`uv.lock` sin ellas; lo reveló la primera actualización de `figuras-cientificas`. Por
+eso `uv sync` y el export se corren después, y la autoverificación lo prueba.
+
 **Las versiones se publican con un solo comando.** `tools/publicar.py` encadena el
 número de versión, la cita, los requisitos, las pruebas, el commit, la etiqueta y el
 push, y se detiene antes de etiquetar si algo falla. Publicar a mano, en varios pasos,
