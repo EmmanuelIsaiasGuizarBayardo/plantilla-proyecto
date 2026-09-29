@@ -75,6 +75,24 @@ afiliación ni logotipo.
 - Actualizar: `uvx copier update --trust` con el árbol limpio, revisar con
   `git diff` y commitear de inmediato. Sin `--defaults`, pregunta los rasgos nuevos.
 
+## Figuras de investigación
+
+Las figuras de investigación usan la biblioteca `figuras-cientificas`, que vive
+aparte de la plantilla porque no todo proyecto la necesita. En el proyecto, se
+agrega con la etiqueta más reciente (hoy `v0.1.1`) y se instalan sus reglas para
+Antigravity:
+
+```powershell
+uv add git+https://github.com/EmmanuelIsaiasGuizarBayardo/figuras-cientificas --tag v0.1.1
+uv run python -m figuras_cientificas regla
+```
+
+Sus reglas, con referencias, están en `src/figuras_cientificas/visualizacion.md`
+de ese repositorio. En resumen: el mapa de color lo decide `mapa_para(datos)`, las
+categorías `categorica(n)`, el tamaño `tamano_figura` y el estilo `usar_estilo`,
+según la guía de Nature; antes de enviar una figura, `revisar_figura(fig)` la
+muestra con daltonismo simulado.
+
 ## Adoptar un proyecto existente
 
 Así se adoptó NeuroDAC:
