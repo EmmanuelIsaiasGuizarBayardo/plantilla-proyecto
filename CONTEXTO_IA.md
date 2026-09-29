@@ -79,15 +79,16 @@ afiliación ni logotipo.
 
 Las figuras de investigación usan la biblioteca `figuras-cientificas`, que vive
 aparte de la plantilla porque no todo proyecto la necesita. En el proyecto, se
-agrega con la etiqueta más reciente (hoy `v0.1.2`) y se instalan sus reglas para
-Antigravity:
+agrega y se instalan sus reglas para Antigravity:
 
 ```powershell
-uv add git+https://github.com/EmmanuelIsaiasGuizarBayardo/figuras-cientificas --tag v0.1.2
+uv add git+https://github.com/EmmanuelIsaiasGuizarBayardo/figuras-cientificas
 uv run python -m figuras_cientificas regla
 ```
 
-Sus reglas, con referencias, están en `src/figuras_cientificas/visualizacion.md`
+`uv.lock` fija el commit exacto, así que no hace falta fijar una etiqueta. Para
+actualizarla: `uv lock --upgrade-package figuras-cientificas`, `uv sync` y otra vez
+`regla`. Sus reglas, con referencias, están en `src/figuras_cientificas/visualizacion.md`
 de ese repositorio. En resumen: el mapa de color lo decide `mapa_para(datos)`, las
 categorías `categorica(n)`, el tamaño `tamano_figura` y el estilo `usar_estilo`,
 según la guía de Nature; antes de enviar una figura, `revisar_figura(fig)` la
@@ -145,5 +146,3 @@ algo de este archivo, se actualiza en el mismo commit.
 - Crear la organización de GitHub de DUNNE con al menos dos dueños.
 - Transferir la plantilla a esa organización y cambiar el valor por defecto de
   `organizacion_github`; después, no crear otro repositorio con el nombre anterior.
-- Neurona AR: autorización por escrito de Mauricio Mendiola Rivera para el modelo.
-- Un *stack* de sitio estático, si Neurona AR se reactiva o aparece otro proyecto así.
