@@ -151,5 +151,3 @@ algo de este archivo, se actualiza en el mismo commit.
 - Crear la organización de GitHub de DUNNE con al menos dos dueños.
 - Transferir la plantilla a esa organización y cambiar el valor por defecto de
   `organizacion_github`; después, no crear otro repositorio con el nombre anterior.
-- Neurona AR: autorización por escrito de Mauricio Mendiola Rivera para el modelo.
-- Un *stack* de sitio estático, si Neurona AR se reactiva o aparece otro proyecto así.
