@@ -97,6 +97,12 @@ categorías `categorica(n)`, el tamaño `tamano_figura` y el estilo `usar_estilo
 según la guía de Nature; antes de enviar una figura, `revisar_figura(fig)` la
 muestra con daltonismo simulado.
 
+Si el trabajo va a un congreso o una revista con requisitos propios, se instala también
+su perfil, que va por encima de las reglas generales: `uv run python -m
+figuras_cientificas regla --perfil cnib_lncs` para Springer LNCS (CNIB). Las guías
+técnicas se consultan cuando hacen falta, sin instalarse:
+`uv run python -m figuras_cientificas guia topomaps_mne` para topografías con MNE.
+
 ## Adoptar un proyecto existente
 
 Así se adoptó NeuroDAC:
